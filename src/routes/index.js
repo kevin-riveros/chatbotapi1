@@ -11,6 +11,11 @@ router.all('*', function (req, res, next) {
 
 router.use(require('./student'));
 router.use(require('./teacher'));
+router.use(require('./course'));
+router.use(require('./attendance'));
+router.use(require('./grade'));
+router.use(require('./homework'));
+router.use(require('./meeting'));
 
 /*
 router.get('/',(req,res)=>{
