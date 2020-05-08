@@ -34,12 +34,24 @@ router.post( "/student",  async ( req, res ) => {
                 error: "name, dni & lastname must be string!"
             })
         }
+        const find_student = await Student.findOne({
+            where:{
+                dni: dni
+            }
+        })
+        if ( find_student ) {
+            return res.json({
+                ok: false,
+                error: `Student with DNI: ${ dni } already exist!`,
+            })
+        }
+
         const new_student = await Student.create({ 
             name,dni,lastname,phone,birthday
           })
         return res.json({
             ok: true,
-            message: "Student created succesfully!",
+            message: "Student was created succesfully!",
             new_student
         })
     } catch (error) {
@@ -69,11 +81,29 @@ router.get( "/student/:id",  async ( req, res ) => {
             courses: []
         })
     }
-    
     return res.json({
         ok: false,
         message: `Student with DNI: ${ id } don't found!`,
     })
 });
+router.delete( "/student/:id",  async ( req, res ) => {
 
+    const { id } = req.params;
+    const student = await Student.destroy({
+        where:{
+            dni: id
+        }
+    })
+    if ( student ) {
+        return res.json({
+            ok: true,
+            student,
+            message: `Student with DNI ${ id } was deleted succesfully!`
+        })
+    }
+    return res.json({
+        ok: false,
+        message: `Student with DNI: ${ id } don't found!`,
+    })
+});
 module.exports = router;

@@ -10,6 +10,7 @@ router.all('*', function (req, res, next) {
 });
 
 router.use(require('./student'));
+router.use(require('./teacher'));
 
 /*
 router.get('/',(req,res)=>{
