@@ -9,10 +9,12 @@ router.all('*', function (req, res, next) {
     next();
 });
 
-//router.use(require('./users'));
+router.use(require('./student'));
 
+/*
 router.get('/',(req,res)=>{
     res.send("API BOT IS WORKING 🍪.")
 });
+*/
 
 module.exports = router;

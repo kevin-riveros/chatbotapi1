@@ -24,8 +24,8 @@ app.use(express.static(app.get("public")));
 app.use(require('./routes/index'));
 
 // default 
-app.get("/*", (req,res) => {
-  res.redirect("/");
+app.get("*", (req,res) => {
+  res.sendfile(__dirname+'/public/index.html');
 });
 
 //Empezando el servidor
