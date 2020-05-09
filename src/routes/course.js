@@ -12,20 +12,50 @@ router.all('*', function (req, res, next) {
 });
 
 router.get( "/course",  async ( req, res ) => {
-    const courses = await Course.findAll()
-    return res.json({
-        ok: true,
-        courses,
-        total_courses: courses.length
-    })
+    try {
+        const courses = await Course.findAll()
+        return res.json({
+            ok: true,
+            courses,
+            total_courses: courses.length
+        })
+    } catch (error) {
+        console.log("ERROR COURSE:", error)
+        return res.json({
+            ok: false,
+            error: "Server Error"
+        })
+    }
+    
 });
 
 router.post( "/course",  async ( req, res ) => {
-    return res.json({
-        ok: false,
-        message: `Create new course is not available`,
-    })
+
+    const { name } = req.body;
+    if ( !name || typeof name != "string" ){
+        return res.json({
+            ok: false,
+            message: `Name type String is required!`,
+        })
+    }
+    try {
+        const new_course = await Course.create({ 
+            name
+            })
+        return res.json({
+            ok: true,
+            message: "Course was created succesfully!",
+            new_course
+        })
+    } catch (error) {
+        console.log(error)
+        return res.json({
+            ok: false,
+            message: `Error in Server`,
+        })
+    }
 });
+
 router.delete( "/course/:id",  async ( req, res ) => {
     const { id } = req.params;
     return res.json({
