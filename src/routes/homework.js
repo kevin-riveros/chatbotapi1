@@ -1,5 +1,6 @@
 const express = require("express");
 const Homework = require("../models").Homework;
+const Course = require("../models").Course;
 const Sequelize = require("../models").Sequelize;
 
 const router = express.Router();
@@ -21,10 +22,42 @@ router.get( "/homework",  async ( req, res ) => {
 });
 
 router.post( "/homework",  async ( req, res ) => {
-    return res.json({
-        ok: false,
-        message: `Create new homework is not available`,
-    })
+
+    const { start_date, end_date, task, image, alert, title, id_course } = req.body;
+
+    if ( !start_date || !end_date || !task || !image || !alert || !title || !id_course ) {
+        return res.json({
+            ok: false,
+            message: `start_date, end_date, task, image, alert, title, id_course are required!`,
+        })
+    }
+    try {
+        const find_course = await Course.findOne({
+            where:{
+                id: id_course
+            }
+        })
+        if ( !find_course ){
+            return res.json({
+                ok: false,
+                message: `Course don't found - invalid id_course.`,
+            })
+        }
+        const new_homework = await Homework.create({
+             start_date, end_date, task, image, alert, title, idCourse: id_course 
+        })
+        return res.json({
+            ok: true,
+            message: "Homework was created succesfully!",
+            new_homework
+        })
+    } catch (error) {
+        console.log("Error", error)
+        return res.json({
+            ok: false,
+            message: `Error in server`,
+        })
+    } 
 });
 router.delete( "/homework/:id",  async ( req, res ) => {
     const { id } = req.params;

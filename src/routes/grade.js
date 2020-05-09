@@ -1,5 +1,8 @@
 const express = require("express");
 const Grade = require("../models").Grade;
+const StudentCourse = require("../models").StudentCourse;
+
+
 const Sequelize = require("../models").Sequelize;
 
 const router = express.Router();
@@ -21,10 +24,57 @@ router.get( "/grade",  async ( req, res ) => {
 });
 
 router.post( "/grade",  async ( req, res ) => {
-    return res.json({
-        ok: false,
-        message: `Create new grade is not available`,
-    })
+
+    const { mark, id_student_course } = req.body;
+
+    try {
+        if ( !mark || !id_student_course ) {
+            return res.json({
+                ok: false,
+                message: `mark & id_student_course are required!`,
+            })
+        }
+        const find_student_course = await StudentCourse.findOne({
+            where:{
+                id: id_student_course
+            }
+        })
+        if ( !find_student_course ) {
+            return res.json({
+                ok: false,
+                message: `Student course don't found, invalid id_student_course!`,
+            })
+        }
+        const new_grade = await Grade.findOrCreate({
+            where:{
+                idStudentCourse:id_student_course
+            },
+            defaults:{ 
+                mark,
+                idStudentCourse:id_student_course
+            }
+        })
+        if ( new_grade[1] ){
+            return res.json({
+                ok: true,
+                message: "grade was created succesfully!",
+                new_grade: new_grade[0]
+            })
+        }else {
+            return res.json({
+                ok: false,
+                message: "StudentCourse with grade exists!",
+                grade: new_grade[0]
+            })
+        }
+        
+    } catch (error) {
+        console.log("ERROR:",error)
+        return res.json({
+            ok: false,
+            message: `Error in server`,
+        })
+    }
 });
 router.delete( "/grade/:id",  async ( req, res ) => {
     const { id } = req.params;

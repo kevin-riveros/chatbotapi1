@@ -1,5 +1,6 @@
 const express = require("express");
 const Attendance = require("../models").Attendance;
+const Student = require("../models").Student;
 const Sequelize = require("../models").Sequelize;
 
 const router = express.Router();
@@ -21,10 +22,43 @@ router.get( "/attendance",  async ( req, res ) => {
 });
 
 router.post( "/attendance",  async ( req, res ) => {
-    return res.json({
-        ok: false,
-        message: `Create new attendance is not available`,
-    })
+    
+    const { attendance_date, attended, id_student } = req.body;
+    if ( !attendance_date || !attended || !id_student ){
+        return res.json({
+            ok: false,
+            message: `attendance_date, attended & id_student are required!`,
+        })
+    }
+    try {
+        const idStudent = id_student
+
+        const find_student = await Student.findOne({
+            where:{
+                id: idStudent
+            }
+        })
+        if ( !find_student ) {
+            return res.json({
+                ok: false,
+                message: `Studend don't found - invalid id_student.`,
+            })
+        }
+        const new_attendance = await Attendance.create({ 
+                attendance_date, attended, idStudent
+            })
+        return res.json({
+            ok: true,
+            message: "attendance was created succesfully!",
+            new_attendance
+        })
+
+    } catch (error) {
+        return res.json({
+            ok: false,
+            message: `Error in server.`,
+        })
+    }
 });
 router.delete( "/attendance/:id",  async ( req, res ) => {
     const { id } = req.params;

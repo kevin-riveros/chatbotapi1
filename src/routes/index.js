@@ -16,6 +16,8 @@ router.use(require('./attendance'));
 router.use(require('./grade'));
 router.use(require('./homework'));
 router.use(require('./meeting'));
+router.use(require('./studentcourse'));
+router.use(require('./classroom'));
 
 /*
 router.get('/',(req,res)=>{
