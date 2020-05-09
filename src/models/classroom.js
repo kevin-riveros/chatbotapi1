@@ -2,7 +2,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Classroom = sequelize.define('Classroom', {
     name: DataTypes.STRING,
-    idStudentCourse: DataTypes.INTEGER,
     idTeacher: DataTypes.INTEGER
   }, {});
   Classroom.associate = function(models) {

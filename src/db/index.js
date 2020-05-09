@@ -36,5 +36,10 @@ Create Homework:
 
 sequelize model:create --name Homework --attributes  start_date:date,end_date:date,task:text,image:string,alert:text,title:string,idCourse:integer
 
+Create CourseClassroom:
+
+sequelize model:create --name CourseClassroom --attributes  idCourse:integer,idTeacher:integer,idClassroom:integer
+
+
 
 */

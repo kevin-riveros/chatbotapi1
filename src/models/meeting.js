@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     start_date: DataTypes.STRING,
     end_date: DataTypes.STRING,
     reason: DataTypes.STRING,
-    idTeacher: DataTypes.INTEGER
+    idTeacher: DataTypes.INTEGER,
+    idStudent: DataTypes.INTEGER,
   }, {});
   Meeting.associate = function(models) {
     // associations can be defined here

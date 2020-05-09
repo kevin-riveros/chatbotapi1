@@ -22,7 +22,7 @@ router.get( "/classroom",  async ( req, res ) => {
 
 router.post( "/classroom",  async ( req, res ) => {
 
-    const { name, id_student_course, id_teacher } = req.body;
+    const { name, id_teacher } = req.body;
 
 
     return res.json({

@@ -1,5 +1,6 @@
 const express = require("express");
 const Student = require("../models").Student;
+const Classroom = require("../models").Classroom;
 
 const router = express.Router();
 
@@ -20,12 +21,12 @@ router.get( "/student",  async ( req, res ) => {
 });
 
 router.post( "/student",  async ( req, res ) => {
-    const { name,dni,lastname,phone,birthday } = req.body;
+    const { name,dni,lastname,phone,birthday, id_classroom } = req.body;
     try {
-        if ( !name || !dni || !lastname ) {
+        if ( !name || !dni || !lastname || !id_classroom ) {
             return res.json({
                 ok: false,
-                error: "name, dni & lastname are required! phone & birthday optional"
+                error: "name, dni, id_classroom & lastname are required! phone & birthday optional"
             })
         }
         if ( typeof name != "string" || typeof dni != "string" ||  typeof lastname != "string" ){
@@ -45,9 +46,20 @@ router.post( "/student",  async ( req, res ) => {
                 error: `Student with DNI: ${ dni } already exist!`,
             })
         }
+        const find_classroom = await Classroom.findOne({
+            where:{
+                id: id_classroom
+            }
+        })
+        if ( !find_classroom ) {
+            return res.json({
+                ok: false,
+                error: `invalid id_classroom`,
+            })
+        }
 
         const new_student = await Student.create({ 
-            name,dni,lastname,phone,birthday
+            name,dni,lastname,phone,birthday, idClassroom:id_classroom
           })
         return res.json({
             ok: true,
