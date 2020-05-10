@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Homework.associate = function(models) {
     // associations can be defined here
+    Homework.belongsTo(models.Course,{ foreignKey: 'idCourse' });
   };
   return Homework;
 };

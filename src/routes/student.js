@@ -1,6 +1,12 @@
 const express = require("express");
 const Student = require("../models").Student;
+const StudentCourse = require("../models").StudentCourse;
 const Classroom = require("../models").Classroom;
+const Course = require("../models").Course;
+const Grade = require("../models").Grade;
+const Homework = require("../models").Homework;
+const Meeting = require("../models").Meeting;
+
 
 const router = express.Router();
 
@@ -86,13 +92,35 @@ router.get( "/student/:id",  async ( req, res ) => {
     
 
     if ( student ) {
+
+        const student_courses = await StudentCourse.findAll({
+            where:{
+                idStudent: student.id
+            },
+            include: [
+                {
+                    model: Course,
+                    required: true,
+                    include: [
+                        {
+                            model: Homework
+                        }
+                    ]
+                },
+                {
+                    model: Grade,
+                    required: true
+                }
+            ],
+        })
+        const student_meetings = await Meeting.findAll({
+            idStudent: student.id
+        })
         return res.json({
             ok: true,
             student,
-            grades: [],
-            homework: [],
-            teacher: {},
-            courses: []
+            student_courses,
+            student_meetings
         })
     }
     return res.json({

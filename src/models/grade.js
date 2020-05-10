@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Grade.associate = function(models) {
     // associations can be defined here
+    Grade.belongsTo(models.StudentCourse,{ foreignKey: 'idStudentCourse' });
   };
   return Grade;
 };
