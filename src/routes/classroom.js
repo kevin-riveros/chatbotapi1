@@ -55,7 +55,8 @@ router.get( "/classroombystudent/:id_classroom",  async ( req, res ) => {
     } catch (error) {
         return res.json({
             ok: false,
-            message: "Error server"
+            message: "Error server",
+            error
         })
     }
     
@@ -96,6 +97,7 @@ router.post( "/classroom",  async ( req, res ) => {
         return res.json({
             ok: false,
             message: `Error in server`,
+            error
         })
     }
  
@@ -135,6 +137,7 @@ router.post( "/courseclassroom",  async ( req, res ) => {
         return res.json({
             ok: false,
             message: `Error in server`,
+            error
         })
     }
  

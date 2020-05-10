@@ -69,6 +69,7 @@ router.post( "/teacher",  async ( req, res ) => {
         return res.json({
             ok: false,
             error: "Server Error: Error creating new Teacher!",
+            error
         })
     }
 });

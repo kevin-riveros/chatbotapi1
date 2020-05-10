@@ -56,6 +56,7 @@ router.post( "/homework",  async ( req, res ) => {
         return res.json({
             ok: false,
             message: `Error in server`,
+            error
         })
     } 
 });

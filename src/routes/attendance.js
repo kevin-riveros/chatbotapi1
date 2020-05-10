@@ -57,6 +57,7 @@ router.post( "/attendance",  async ( req, res ) => {
         return res.json({
             ok: false,
             message: `Error in server.`,
+            error
         })
     }
 });

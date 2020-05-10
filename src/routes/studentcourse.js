@@ -83,6 +83,7 @@ router.post( "/studentcourse",  async ( req, res ) => {
         return res.json({
             ok: false,
             message: `Error in server`,
+            error
         })
     }    
 });
@@ -123,6 +124,7 @@ router.post( "/studentcoursegrades",  async ( req, res ) => {
         return res.json({
             ok: false,
             message: `Error in server`,
+            error
         })
     }    
 });

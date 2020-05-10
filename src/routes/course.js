@@ -23,7 +23,8 @@ router.get( "/course",  async ( req, res ) => {
         console.log("ERROR COURSE:", error)
         return res.json({
             ok: false,
-            error: "Server Error"
+            error: "Server Error",
+            error
         })
     }
     
@@ -52,6 +53,7 @@ router.post( "/course",  async ( req, res ) => {
         return res.json({
             ok: false,
             message: `Error in Server`,
+            error
         })
     }
 });

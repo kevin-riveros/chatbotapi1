@@ -46,6 +46,7 @@ router.post( "/meeting",  async ( req, res ) => {
         return res.json({
             ok: false,
             message: `Error server.`,
+            error
         })
     } 
 });
