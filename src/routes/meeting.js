@@ -21,10 +21,33 @@ router.get( "/meeting",  async ( req, res ) => {
 });
 
 router.post( "/meeting",  async ( req, res ) => {
-    return res.json({
-        ok: false,
-        message: `Create new meeting is not available`,
-    })
+
+    const { meeting_date, start_date, end_date, reason, id_teacher, id_student } = req.body;
+
+    if ( !meeting_date || !start_date || !end_date || !reason || !id_teacher || !id_student ) {
+        return res.json({
+            ok: false,
+            message: `meeting_date, start_date, end_date, reason, id_teacher, id_student required!`,
+        })
+    }
+    try {
+
+        const new_meeting = await Meeting.create({
+            meeting_date, start_date, end_date, reason, idTeacher: id_teacher, idStudent: id_student
+        })
+        return res.json({
+            ok: true,
+            new_meeting,
+            message: "success"
+        })
+
+
+    } catch (error) {
+        return res.json({
+            ok: false,
+            message: `Error server.`,
+        })
+    } 
 });
 router.delete( "/meeting/:id",  async ( req, res ) => {
     const { id } = req.params;

@@ -3,6 +3,7 @@ const StudentCourse = require("../models").StudentCourse;
 const Student = require("../models").Student;
 const Course = require("../models").Course;
 const Sequelize = require("../models").Sequelize;
+const Grade = require("../models").Grade;
 
 const router = express.Router();
 
@@ -85,6 +86,47 @@ router.post( "/studentcourse",  async ( req, res ) => {
         })
     }    
 });
+
+router.post( "/studentcoursegrades",  async ( req, res ) => {
+    const { id_course, id_student, mark } = req.body;
+    if ( !id_course || !id_student || !mark ){
+        return res.json({
+            ok: false,
+            message: `id_course, grade & id_student  are required!`,
+        })
+    }
+    try {
+        const find_studentCourse = await StudentCourse.findOne({
+            where:{
+                idCourse: id_course,
+                idStudent: id_student
+            }
+        })
+        if ( !find_studentCourse ){
+            return res.json({
+                ok: false,
+                message: `Studend course don't found.`,
+            })
+        }
+        const new_grade = await Grade.create({
+            mark,
+            idStudentCourse: find_studentCourse.id
+        })
+        return res.json({
+            ok: true,
+            message: "grade was created succesfully!",
+            new_grade
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.json({
+            ok: false,
+            message: `Error in server`,
+        })
+    }    
+});
+
 router.delete( "/studentcourse/:id",  async ( req, res ) => {
     const { id } = req.params;
     return res.json({

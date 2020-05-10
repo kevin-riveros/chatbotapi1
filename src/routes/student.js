@@ -83,6 +83,8 @@ router.get( "/student/:id",  async ( req, res ) => {
             dni: id
         }
     })
+    
+
     if ( student ) {
         return res.json({
             ok: true,

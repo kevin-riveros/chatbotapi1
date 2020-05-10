@@ -60,13 +60,13 @@ router.post( "/grade",  async ( req, res ) => {
                 message: "grade was created succesfully!",
                 new_grade: new_grade[0]
             })
-        }else {
-            return res.json({
-                ok: false,
-                message: "StudentCourse with grade exists!",
-                grade: new_grade[0]
-            })
         }
+        return res.json({
+            ok: false,
+            message: "StudentCourse with grade exists!",
+            grade: new_grade[0]
+        })
+        
         
     } catch (error) {
         console.log("ERROR:",error)
